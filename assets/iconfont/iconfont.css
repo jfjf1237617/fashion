@@ -1,0 +1,71 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 2637371 */
+  src: url('iconfont.woff2?t=1626433381127') format('woff2'),
+       url('iconfont.woff?t=1626433381127') format('woff'),
+       url('iconfont.ttf?t=1626433381127') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-hot_product:before {
+  content: "\e603";
+}
+
+.icon-list:before {
+  content: "\e647";
+}
+
+.icon-users:before {
+  content: "\f13a";
+}
+
+.icon-arrowRight:before {
+  content: "\e65d";
+}
+
+.icon-no_eye:before {
+  content: "\e6ad";
+}
+
+.icon-eye:before {
+  content: "\e9ab";
+}
+
+.icon-jinxingzhong:before {
+  content: "\e627";
+}
+
+.icon-zhifushibai:before {
+  content: "\e663";
+}
+
+.icon-success:before {
+  content: "\e60c";
+}
+
+.icon-a:before {
+  content: "\e602";
+}
+
+.icon-label01:before {
+  content: "\e69a";
+}
+
+.icon-download:before {
+  content: "\e601";
+}
+
+.icon-myProducts:before {
+  content: "\e63d";
+}
+
+.icon-setting:before {
+  content: "\e72c";
+}
+

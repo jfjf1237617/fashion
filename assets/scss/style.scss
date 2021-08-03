@@ -1,0 +1,258 @@
+// variable
+$transtion_04: all 0.4s ease-in-out;
+
+// base
+html {
+  font-size: 20px;
+}
+
+// h title
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+}
+
+.h1 {
+  font-size: 26px;
+  font-family: Helvetica-Bold, Helvetica;
+  font-weight: bold;
+  color: #000000;
+  line-height: 31px;
+}
+
+.h2 {
+  font-size: 16px;
+  font-family: Roboto-Bold, Roboto;
+  font-weight: bold;
+  color: #000000;
+  line-height: 21px;
+}
+
+.h3-gray {
+  font-size: 14px;
+  font-family: Helvetica-Bold, Helvetica;
+  font-weight: bold;
+  color: #929292;
+}
+
+// input
+.gray-input {
+  input {
+    font-size: 14px;
+    font-family: Helvetica;
+    color: #000;
+    line-height: 20px;
+    padding: 10px 30px;
+    width: 100%;
+    border-radius: 20px;
+    background: #e6e6e6;
+    transition: all 0.4s ease-in-out;
+    &::placeholder {
+      color: #929292;
+    }
+    &, &:focus {
+      border: none;
+      outline: none;
+    }
+    &:focus {
+      background: #eee;
+      box-shadow: 0 0 5px 0 #e6e6e6;
+    }
+  }
+}
+
+.gray-border-input {
+  input {
+    font-size: 14px;
+    font-family: Helvetica;
+    color: #000;
+    line-height: 20px;
+    padding: 10px 30px;
+    width: 100%;
+    border-radius: 20px;
+    // box-shadow: 0 0 1px 1px #929292;
+    transition: all 0.4s ease-in-out;
+    &::placeholder {
+      color: #929292;
+    }
+    &, &:focus {
+      border: 1px solid #DCDFE6;
+      outline: none;
+    }
+    &:focus {
+      box-shadow: 0 0 5px 0 #e6e6e6;
+    }
+  }
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+input[type="number"]{
+  -moz-appearance: textfield;
+}
+
+// button
+.button {
+  &.login, &.signup {
+    font-size: 24px;
+    font-family: SFProDisplay-Bold, SFProDisplay;
+    font-weight: bold;
+    color: #FFFFFF;
+    background: coral;
+    width: 100%;
+    margin: auto;
+    border-radius: 10px;
+    height: 60px;
+  }
+  &.signup {
+    max-width: 350px;
+  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: $transtion_04;
+  cursor: pointer;
+  &, &:focus {
+    border: none;
+    outline: none;
+  }
+  &:hover {
+    box-shadow: 0 0 5px 0 #fff;
+  }
+}
+
+// form - checkbox
+.xu-checkbox {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  & > input {
+    display: none;
+    & + span {
+      border: solid 1px #929292;
+      padding: 2px;
+      transition: all 0.4s ease-in-out;
+      transform: scale(0.6);
+      color: #FFF;
+    }
+    &:checked + span {
+      background: coral;
+      .el-icon-check:before {
+        font-weight: 1000;
+      }
+    }
+  }
+  
+  & > .text {
+    font-size: 14px;
+    font-family: Helvetica;
+    color: #929292;
+  }
+
+  & > *:last-child {
+    margin-left: 6px;
+  }
+}
+
+.xu-checkbox-icon {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  & > input {
+    display: none;
+    & + span {
+      display: inline-block;
+      flex-basis: 17px;
+      flex-shrink: 0;
+      height: 17px;
+      border: solid 1px #929292;
+      transition: all 0.4s ease-in-out;
+      margin-right: 10px;
+      & + * {
+        flex: 1;
+      }
+    }
+    &:checked + span {
+      border: none;
+      background-image: url('~/assets/icon/right.png');
+    }
+  }
+  
+  & > .text {
+    font-size: 14px;
+    font-family: Helvetica;
+    color: #929292;
+  }
+}
+
+
+
+// container
+.auto-margin {
+  // display: block;
+  width: 100%;
+  max-width: 1000px;
+  margin: auto;
+  & > .auto-padding {
+    display: block;
+    padding: 0 100px;
+  }
+  & + .auto-margin {
+    margin-top: 30px;
+  }
+}
+@media screen and ( max-width: 1000px ) {
+  .auto-margin {
+    & > .auto-padding {
+      padding: 0 10px;
+    }
+    & + .auto-margin {
+      margin-top: 20px;
+    }
+  }
+}
+
+// element-ui
+@media screen and (max-width: 500px) {
+  .el-message-box{
+    width: 300px !important;
+  }
+
+  .el-message {
+    min-width: 300px !important;
+  }
+}
+
+// flex
+.flex-ac {
+  display: flex;
+  align-items: center;
+}
+.flex-ac-jc {
+  @extend .flex-ac;
+  justify-content: center;
+}
+.flex-ac-jsb {
+  @extend .flex-ac;
+  justify-content: space-between;
+}
+
+// square
+.square {
+  position: relative;
+  &::before {
+    content: '';
+    display: block;
+    width: 100%;
+    padding-bottom: 100%;
+  }
+  .content {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+}

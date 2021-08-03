@@ -1,0 +1,61 @@
+const PREFIX = "https://adm.mixshop.world";
+export default {
+	// distributor-product-controller
+	get_distributor_product_list: `${PREFIX}/distributor/product/list`,
+	get_distributor_product_self: `${PREFIX}/distributor/product/self`,
+	get_distributor_product_realSelf: `${PREFIX}/distributor/product/realSelf`,
+	post_distributor_product_update_dissStatus:(data)=> `${PREFIX}/distributor/product/update/disStatus?disStatus=${data.disStatus}&ids=${data.ids}`,
+	post_distributor_product_import:(data,param)=>`${PREFIX}/distributor/product/import/${data}?channel=${param}`,
+	// ums-admin-contoller
+	login_admin_info: `${PREFIX}/admin/0`,
+	update_password: `${PREFIX}/admin/updatePassword`,
+	shopify_login: `${PREFIX}/admin/merchant/login`,
+	post_admin_attachment: `${PREFIX}/admin/attachment`,
+	get_admin_attachment: `${PREFIX}/admin/attachments`,
+	get_admin_share: code => `${PREFIX}/admin/share/${code}`,
+	get_admin_ref: `${PREFIX}/admin/ref`,
+	// shopify-controller
+	shopify_authorize_back: `${PREFIX}/shopify/authorize/back`,
+	shopify_authorize_url: `${PREFIX}/shopify/authorize/url`,
+	shopify_import_product: productId => `${PREFIX}/shopify/import/product/${productId}`,
+	get_shopify_locations: `${PREFIX}/shopify/locations`,
+	put_shopify_order: orderId => `${PREFIX}/shopify/order/${orderId}`,
+	get_shopify_config: `${PREFIX}/shopify/config`,
+	put_shopify_config_priceRate: rate => `${PREFIX}/shopify/config/priceRate/${rate}`,
+	put_shopify_order_confirm: orderId => `${PREFIX}/shopify/orders/${orderId}/fullfillment/confirm`,
+	post_shopify_order_pay: orderId => `${PREFIX}/shopify/order/${orderId}/pay`,
+	get_shopify_order_status: orderId => `${PREFIX}/shopify/order/${orderId}/status`,
+	get_shopify_fashion_authorize_back:	`${PREFIX}/shopify/fashion/authorize/back`,
+	get_shopify_fashion_authorize_url:`${PREFIX}/shopify/fashion/authorize/url`,
+
+	search_product_list: `${PREFIX}/product/simpleList`,
+	square_authorize: `${PREFIX}/square/authorize/url`,
+	square_import_product: productId => `${PREFIX}/square/import/product/${productId}`,
+	get_country_list: `${PREFIX}/config/country/list`,
+	file_upload: `${PREFIX}/fileUpload`,
+	get_cloudbreakr_interests_category: `${PREFIX}/cloudbreakr/categoryList`,
+	post_cloudbreakr_step_one: `${PREFIX}/cloudbreakr/create/step1`,
+	post_cloudbreakr_step_two: `${PREFIX}/cloudbreakr/create/step2`,
+	post_cloudbreakr_step_three: `${PREFIX}/cloudbreakr/create/step3`,
+	post_cloudbreakr_step_four: `${PREFIX}/cloudbreakr/create/step4`,
+	post_cloudbreakr_step_five: `${PREFIX}/cloudbreakr/create/step5`,
+	post_cloudbreakr_step_six: `${PREFIX}/cloudbreakr/create/step6`,
+	post_cloudbreakr_step_seven: `${PREFIX}/cloudbreakr/create/step7`,
+	post_cloudbreakr_save_campaign: `${PREFIX}/cloudbreakr/saveCampaign`,
+	get_order_list: `${PREFIX}/shopify/orders`,
+	get_cloudbreakr_list: `${PREFIX}/cloudbreakr/list`,
+
+	// reseller-controller
+	post_reseller_address: `${PREFIX}/reseller/address`,
+	modify_reseller_address: addressId => `${PREFIX}/reseller/address/${addressId}`,
+	get_reseller_address_list: `${PREFIX}/reseller/address/list`,
+	get_reseller_orders: `${PREFIX}/reseller/orders`,
+	put_reseller_orders: orderId => `${PREFIX}/reseller/orders/${orderId}`,
+	get_reseller_orders_code: code => `${PREFIX}/reseller/orders/code/${code}`,
+	post_reseller_request: `${PREFIX}/reseller/request`,
+	get_reseller_request_list: `${PREFIX}/reseller/request/list`,
+	get_reseller_total: `${PREFIX}/reseller/total`,
+	//pms-product-category-controller
+	get_product_category_aws_list: `${PREFIX}/productCategory/aws/list/product/withChildren`,
+	get_product_category: `${PREFIX}/productCategory/list/withChildren`
+}

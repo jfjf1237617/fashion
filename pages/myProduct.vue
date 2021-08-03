@@ -1,0 +1,232 @@
+<template>
+  <div class="my-product-container">
+    <p class="my-product-title">My Products</p>
+    <el-table
+      empty-text="No products found"
+      class="my-products-table"
+      :data="productList"
+      width
+    >
+      <el-table-column class="my-product-table-item" label="Picture">
+        <template slot-scope="scope">
+          <img
+            :src="
+              scope.row.pic.includes('gigab2b')
+                ? scope.row.pic +
+                  '?x-oss-process=image%2Fresize%2Cw_500%2Ch_500%2Cm_pad'
+                : scope.row.pic
+            "
+            class="my-product-pic"
+          />
+        </template>
+      </el-table-column>
+      <el-table-column
+        class="my-product-table-item"
+        label="Name"
+        min-width="200"
+      >
+        <template slot-scope="scope">
+          <p>{{ scope.row.name }}</p>
+        </template>
+      </el-table-column>
+      <el-table-column class="my-product-table-item" label="Stock">
+        <template slot-scope="scope">
+          <p>{{ scope.row.stock }}</p>
+        </template>
+      </el-table-column>
+      <el-table-column
+        class="my-product-table-item"
+        label="Cost"
+        min-width="100"
+      >
+        <template slot-scope="scope">
+          <p>${{ scope.row.price }}&nbsp;{{ scope.row.currencyCode }}</p>
+        </template>
+      </el-table-column>
+      <el-table-column
+        class="my-product-table-item"
+        label="Price"
+        min-width="100"
+      >
+        <template slot-scope="scope">
+          <p>${{ scope.row.disPrice }}&nbsp;{{ scope.row.currencyCode }}</p>
+        </template>
+      </el-table-column>
+      <el-table-column class="my-product-table-item" label="Import">
+        <template slot-scope="scope">
+          <p>
+            {{ scope.row.status === 5 ? "Square" : "Shopify" }}
+          </p>
+        </template>
+      </el-table-column>
+    </el-table>
+    <pagination
+      :pageTotal="total"
+      :pageNum="pageNum"
+      :pageSize="pageSize"
+      @change-page="handlePagination"
+      :current-page.sync="pageNum"
+    ></pagination>
+  </div>
+</template>
+<script lang='ts'>
+import Vue from "vue";
+import distributorService from "~/global/service/distributor_product.js";
+import { Loading } from "element-ui";
+import { EventBus } from "~/event-bus";
+import { mapState, mapMutations } from "vuex";
+import Pagination from "~/components/Pagination.vue";
+import { getMyProductList } from "~/utils/shopifyUtils/index";
+export default Vue.extend({
+  layout: "base",
+  async middleware({ route, store, app, redirect }) {
+    let fullPath = route.path;
+    var pageRedirect = (token?: any, id?: any) => {
+      let result = false;
+      let toRep = [/\/slogin.*/, /\/ssignup.*/];
+      let flag = toRep.filter((reg) => {
+        return reg.test(fullPath);
+      });
+      if (!token && !id) {
+        if (fullPath !== "/" && flag.length < 1) {
+          redirect("/slogin?from=fe");
+          result = true;
+        }
+        result = true;
+      } else if (id) {
+        if (flag.length > 0) {
+          redirect("/products");
+          result = true;
+        }
+      }
+      return result;
+    };
+    let token = app.$cookies.get("token");
+    if (pageRedirect(token)) return;
+    if (store.state.adminUser.user.id === null) {
+      await store.dispatch("adminUser/getUser", token);
+    }
+    if (pageRedirect(undefined, store.state.adminUser.user.id)) return;
+  },
+  beforeRouteEnter(to, from, next) {
+    let queryObj = {} as any;
+    if (to.path === "/myProduct") {
+      if (to.query.page) {
+        queryObj.pageNum = parseInt(to.query.page as string);
+      }
+      next((vm) => {
+        getMyProductList({ ...queryObj, store: vm.$store });
+      });
+    }
+    next();
+  },
+  beforeRouteUpdate(to, from, next) {
+    let queryObj = {} as any;
+    queryObj.store = this.$store;
+    if (to.path === "/myProduct") {
+      if (to.query.page) {
+        queryObj.pageNum = parseInt(to.query.page as string);
+      }
+      getMyProductList(queryObj);
+    }
+    next();
+  },
+  components: {
+    Pagination,
+  },
+  data() {
+    return {
+      // screenWidth: "",
+      // myProducts: [],
+      // pageNum: 1,
+      // pageSize: Number,
+      // totalPage: Number,
+      // total: Number,
+      loading: null,
+    };
+  },
+  computed: {
+    ...mapState("product", [
+      "productList",
+      "pageNum",
+      "pageSize",
+      "totalPage",
+      "total",
+      "message",
+      "code",
+      "searchProduct",
+    ]),
+  },
+  watch: {
+    // screenWidth(val) {
+    //   this.screenWidth = val;
+    // },
+  },
+  mounted() {
+    console.log(this.pageNum, "myproduct");
+  },
+  methods: {
+    handlePagination(current: number) {
+      let obj = JSON.parse(JSON.stringify(this.$route.query));
+      Object.assign(obj, { page: current });
+      this.$router.push({ query: obj });
+      document.getElementsByClassName("el-main")[0].scrollTop = 0;
+    },
+    // resizes() {
+    //   this.screenWidth = String(document.body.clientWidth);
+    //   EventBus.$emit("sendScreenWidth", this.screenWidth);
+    // },
+    // handlePagination(current: number) {
+    //   this.pageNum = current;
+    //   this.getList();
+    //   document.getElementsByClassName("el-main")[0].scrollTop = 0;
+    // },
+    // async getList() {
+    //   let params = {
+    //     pageNum: this.pageNum,
+    //     pageSize: this.pageSize,
+    //     status: 6,
+    //   };
+    //   if (this.loading) {
+    //     (this.loading as any).close();
+    //   }
+    //   (this.loading as any) = Loading.service({
+    //     target: ".all-container",
+    //   });
+    //   const res = await distributorService.getDistributorProductRealSelf(
+    //     params
+    //   );
+    //   this.myProducts = res.data.data.list;
+    //   this.pageNum = res.data.data.pageNum;
+    //   this.totalPage = res.data.data.totalPage;
+    //   this.total = res.data.data.total;
+    //   (this.loading as any).close();
+    // },
+  },
+});
+</script>
+<style lang="less" scoped>
+.my-product-container {
+  .my-product-title {
+    width: 100%;
+    font-size: 2rem;
+    font-weight: 600;
+  }
+  .my-products-table {
+    width: 100%;
+    background-color: #fff;
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    padding: 0 20px;
+    box-shadow: 0px 0px 5px rgba(23, 24, 24, 0.05);
+    border: solid 1px rgba(23, 24, 24, 0.05);
+    margin-top: 20px;
+  }
+  .my-product-pic {
+    width: 78px;
+    height: 78px;
+    object-fit: cover;
+  }
+}
+</style>
