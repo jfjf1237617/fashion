@@ -239,7 +239,7 @@ export default Vue.extend({
     .start-shopify-btn {
       padding: 4px 16px !important;
       height: 32px;
-      background-color: #c706d9;
+      background-color: #c79818;
       border: none;
       color: white;
       font-size: 14px;

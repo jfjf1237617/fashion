@@ -1,6 +1,6 @@
 <template>
   <div class="page-register">
-    <h1 class="h1 title">Join <i>MixShop</i> free</h1>
+    <h1 class="h1 title">Join <i>Fashion Express</i> free</h1>
     <div class="block email-pswd">
       <div class="gray-input">
         <input type="text" placeholder="Username" v-model="username" />
@@ -32,7 +32,7 @@
       </div>
     </div>
     <div class="block login-signup">
-      <button class="button login" @click="signup">Join MixShop</button>
+      <button class="button login" @click="signup">Join Fashion Express</button>
       <p class="to-slogin">
         Already have an account?<span class="to-slogin-btn" @click="toSlogin">
           Log in</span
@@ -109,6 +109,7 @@ export default Vue.extend({
           newStatus: 1,
           email: this.email,
           channel: this.channel,
+          platform:'fashion',
         };
         this.state.signup = true;
         let lgRes = await shopifyService.shopifyLogin(params);

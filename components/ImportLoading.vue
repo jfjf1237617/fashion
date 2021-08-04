@@ -13,18 +13,21 @@ export default {};
 </script>
 <style lang="less" scoped>
 .loading-container {
-  border: solid 1px rgba(186, 191, 195, 1);
-  border-radius: 4px;
   width: 100%;
   height: 32px;
   padding: 7px 16px;
-  background-color: #fff;
-  margin-top: 10px;
+  // margin-top: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: rgb(199 152 24);
+  border-radius: 20px;
+  border: none;
+  color: rgb(255 255 255);
+  opacity: 0.6;
+  cursor: not-allowed;
   &:hover {
-    cursor: auto;
+    cursor: not-allowed;
   }
   .loading-info {
     font-size: 14px;
@@ -39,7 +42,7 @@ export default {};
       width: 6px;
       height: 2px;
       border-radius: 50%;
-      background-color: #6d7175;
+      background-color: #fff;
       position: absolute;
       &:nth-child(1) {
         top: 7px;

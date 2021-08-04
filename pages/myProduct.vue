@@ -4,7 +4,7 @@
     <el-table
       empty-text="No products found"
       class="my-products-table"
-      :data="productList"
+      :data="myProductList"
       width
     >
       <el-table-column class="my-product-table-item" label="Picture">
@@ -57,6 +57,29 @@
           <p>
             {{ scope.row.status === 5 ? "Square" : "Shopify" }}
           </p>
+        </template>
+      </el-table-column>
+      <el-table-column
+        class="my-collection-table-item"
+        label="Operation"
+        fixed="right"
+        width="300"
+      >
+        <template slot-scope="scope">
+          <el-button
+            :disabled="myDisableRow.has(scope.row.id)"
+            :loading="myRemoveLoading.has(scope.row.id)"
+            size="mini"
+            @click="removeProduct(scope.row, scope.$index)"
+            >Remove product</el-button
+          >
+          <el-button
+            :disabled="myDisableRow.has(scope.row.id)"
+            :loading="myShopifyLoading.has(scope.row.id)"
+            size="mini"
+            @click="importShopify(scope.row, scope.$index)"
+            >Import to shopify</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -143,9 +166,16 @@ export default Vue.extend({
       // totalPage: Number,
       // total: Number,
       loading: null,
+      removeLoading: new Set(),
+      removeLoadingChange: 0,
+      shopifyLoading: new Set(),
+      shopifyLoadingChange: 0,
+      disableRow: new Set(),
+      disableRowChange: 0,
     };
   },
   computed: {
+    ...mapState("adminUser", ["user"]),
     ...mapState("product", [
       "productList",
       "pageNum",
@@ -156,21 +186,103 @@ export default Vue.extend({
       "code",
       "searchProduct",
     ]),
+    myProductList(): any {
+      let filterList = this.productList.filter((item: any) => {
+        return item !== undefined;
+      });
+      return filterList;
+    },
+    myRemoveLoading(): any {
+      var removeNum = this.removeLoadingChange;
+      return this.removeLoading;
+    },
+    myShopifyLoading(): any {
+      var shopifyNum = this.shopifyLoadingChange;
+      return this.shopifyLoading;
+    },
+    myDisableRow(): any {
+      var disableNum = this.disableRowChange;
+      return this.disableRow;
+    },
   },
   watch: {
     // screenWidth(val) {
     //   this.screenWidth = val;
     // },
   },
-  mounted() {
-    console.log(this.pageNum, "myproduct");
-  },
   methods: {
+    ...mapMutations('product',['m_set_product_undefined']),
     handlePagination(current: number) {
       let obj = JSON.parse(JSON.stringify(this.$route.query));
       Object.assign(obj, { page: current });
       this.$router.push({ query: obj });
       document.getElementsByClassName("el-main")[0].scrollTop = 0;
+    },
+    async removeProduct(row: any, index: number) {
+      let id = row.id;
+      this.removeLoading.add(id);
+      this.disableRow.add(id);
+      this.removeLoadingChange += 1;
+      this.disableRowChange += 1;
+      let params = {
+        disStatus: 0,
+        ids: id,
+      };
+      let removeRow =
+        await distributorService.postDistributorProductUpdateDissStatus(params);
+      if (removeRow.data.code === 200) {
+        let obj = this.myProductList.find((item: any) => {
+          return item.id == id;
+        });
+        let i = this.productList.indexOf(<never>obj);
+        this.m_set_product_undefined(i);
+        // this.$set(this.productList, i, undefined);
+        this.$message({
+          type: "success",
+          message: "Remove successfully!",
+        });
+        this.renderList();
+      }
+      this.removeLoading.delete(id);
+      this.disableRow.delete(id);
+    },
+    async importShopify(row: any, index: number) {
+      let id = row.id;
+      this.shopifyLoading.add(id);
+      this.disableRow.add(id);
+      this.shopifyLoadingChange += 1;
+      this.disableRowChange += 1;
+      let adminSquareStatus = this.user.squareStatus;
+      if (adminSquareStatus === 11 || adminSquareStatus === 22) {
+        let importToShopify =
+          await distributorService.postDistributorProductImport(id, "shopify");
+        if (importToShopify.data.code === 200) {
+          this.$message({
+            type: "success",
+            message: "Import successfully!",
+          });
+        }
+      } else {
+        window.open("https://apps.shopify.com/MixShop");
+      }
+      this.shopifyLoading.delete(id);
+      this.disableRow.delete(id);
+    },
+    async renderList() {
+      let params = {
+        pageNum: this.pageNum,
+        // pageSize: this.pageSize,
+        // status: 1,
+        store:this.$store
+      };
+      getMyProductList(params);
+      // const res = await distributorService.getDistributorProductRealSelf(
+      //   params
+      // );
+      // this.productList = res.data.data.list;
+      // this.pageNum = res.data.data.pageNum;
+      // this.totalPage = res.data.data.totalPage;
+      // this.total = res.data.data.total;
     },
     // resizes() {
     //   this.screenWidth = String(document.body.clientWidth);

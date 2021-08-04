@@ -32,6 +32,28 @@ import { tRenderImg } from "~/utils/shopifyUtils/index";
 import { mapState, mapMutations } from "vuex";
 export default Vue.extend({
   layout: "base",
+  async middleware({ route, redirect, app, query, store }) {
+    if (process.server) {
+      if (route.fullPath.includes("myshopify")) {
+        if (query.shop) {
+          let index = query.shop.indexOf(".myshopify");
+          let shopifyName = query.shop.slice(0, index);
+          let shopifyEmail = query.shop;
+          store.commit("shopifyInfo/m_update_shopify", {
+            shopifyName,
+            shopifyEmail,
+          });
+          const res = await app.$axios.get(
+            `/shopify/authorize/url?shopName=${shopifyName}`
+          );
+          if (res.data.code === 200) {
+            let authUrl = res.data.data;
+            redirect(authUrl);
+          }
+        }
+      }
+    }
+  },
   beforeRouteEnter(to, from, next) {
     let queryObj = {} as any;
     if (to.path === "/") {

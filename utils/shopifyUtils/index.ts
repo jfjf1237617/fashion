@@ -12,7 +12,7 @@ interface getProductListParams {
 }
 interface getMyProductListParams{
   pageNum?: number,
-  store: any
+  store?: any
 }
 var loading: any = null;
 export async function getProductList({ pageNum = 1, cateId, search, status, newStatus, store }: getProductListParams) {
@@ -101,47 +101,6 @@ export function tRenderImg() {
     });
   })();
 }
-// export function renderImg() {
-//   console.log("outhere");
-
-//   document.addEventListener('load', function () {
-//     console.log("here");
-//     const imgs = document.querySelectorAll('.card-img-section')
-//     console.log(imgs);
-
-//     function lazyLoad() {
-//       console.log("haaaa");
-
-//       const windowHeight = document.documentElement.clientHeight
-//       imgs.forEach(($img: any, i) => {
-//         if ($img.dataset.background && $img.getBoundingClientRect().bottom >= 0 && windowHeight > $img.getBoundingClientRect().top) {
-//           console.log($img.style);
-
-//           $img.style.background = '#fff' +
-//             ` url(${$img.dataset.background})` +
-//             ' no-repeat' +
-//             ' center/100%';
-//         }
-
-//         delete $img.dataset.background
-//       }
-//       )
-//     }
-//     lazyLoad()
-//     document.addEventListener('scroll', debounce(lazyLoad, 200))
-//   })
-//   function debounce(func:any, wait:any) {
-//     console.log("debounce");
-
-//     let timer:any = null
-//     return function (...args:any) {
-//       if (timer) clearTimeout(timer)
-//       timer = setTimeout(() => {
-//         func(...args)
-//       }, wait)
-//     }
-//   }
-// }
 export async function getMyProductList({ pageNum = 1, store }: getMyProductListParams) {
   if (loading) {
     loading.close()

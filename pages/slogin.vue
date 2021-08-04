@@ -1,6 +1,6 @@
 <template>
   <div class="page-slogin">
-    <h1 class="h1 title">Log in to your <i>MixShop</i></h1>
+    <h1 class="h1 title">Log in to your <i>Fashion Express</i></h1>
     <div class="block email-pswd">
       <div class="gray-input">
         <input type="text" placeholder="Username" v-model="userName" />
@@ -18,7 +18,7 @@
     <div class="block login-signup">
       <button class="button login" @click="slogin">Login</button>
       <p class="to-signup">
-        Don't have a MixShop account?
+        Don't have a Fashion Express account?
         <span class="to-signup-btn" @click="toSsignup"> Sign up now</span>
       </p>
     </div>
@@ -33,11 +33,6 @@ import { mapState } from "vuex";
 import shopifyService from "~/global/service/shopify";
 import Cookies from "js-cookie";
 export default Vue.extend({
-  async middleware({ app, redirect }) {
-    if (app.$cookies.get("token")) {
-      redirect("/");
-    }
-  },
   async asyncData({ query, app, redirect }) {
     if (
       app.$cookies.get("token") &&
@@ -65,7 +60,10 @@ export default Vue.extend({
       //     shopName: query.name,
       //   };
       // }
-      return { shopName: query.name, channel: query.channel };
+      return {
+        shopName: query.name,
+        channel: query.channel,
+      };
     }
     // if (query.name && query.pwd && !app.$cookies.get("token")) {
     // } else if (query.name && !query.pwd && app.$cookies.get("token")) {
@@ -144,6 +142,7 @@ export default Vue.extend({
           username: this.userName,
           channel: this.channel,
           newStatus: 2,
+          platform: "fashion",
         };
       } else if (this.channel) {
         params = {
@@ -151,12 +150,14 @@ export default Vue.extend({
           username: this.userName,
           shopName: this.shopName,
           channel: this.channel,
+          platform: "fashion",
         };
       } else {
         params = {
           password: this.password,
           username: this.userName,
           shopName: this.shopName,
+          platform: "fashion",
         };
       }
       let lgRes = (await shopifyService.shopifyLogin(params)) as any;

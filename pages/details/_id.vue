@@ -214,6 +214,7 @@ export default Vue.extend({
   border-radius: 10px;
   box-shadow: 0px 0px 5px rgba(23, 24, 24, 0.05);
   margin: 20px 10px;
+  padding-bottom: 20px;
   .product-detail {
     padding: 20px;
     display: flex;
@@ -261,7 +262,7 @@ export default Vue.extend({
   .import-shopify {
     width: 100%;
     height: 36px;
-    margin-bottom: 20px;
+    // margin-bottom: 20px;
     position: relative;
     button {
       width: 180px;
@@ -270,7 +271,7 @@ export default Vue.extend({
       border: none;
       padding: 0.8rem 1.6rem;
       color: white;
-      background-color: #c706d9;
+      background-color: #c79818;
       font-size: 1.2rem;
       cursor: pointer;
       border-radius: 0.4rem;

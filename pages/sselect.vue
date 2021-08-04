@@ -1,21 +1,21 @@
 <template>
   <div class="shopify-select-page">
     <div class="shopify-select-title">
-      <h1 class="title" v-if="$route.query.channel==='shopify'">Connect Mixshop with Shopify</h1>
-      <h1 class="title" v-if="$route.query.channel==='square'">Connect Mixshop with Square</h1>
-      <span v-if="$route.query.channel==='shopify'" v-html="shopifyLogoIcon"></span>
+      <h1 class="title">Connect Fashion Express with Shopify</h1>
+      <!-- <h1 class="title" v-if="$route.query.channel==='square'">Connect Fashion Express with Square</h1>
+      <span v-if="$route.query.channel==='shopify'" v-html="shopifyLogoIcon"></span> -->
     </div>
     <h3 class="shopify-select-subtitle">
       Choose which account to connect with {{ name }}
     </h3>
     <div class="shopify-select-btn">
       <div @click="$router.push(`/slogin?name=${name}&channel=${channel}&bindOld=true`)" class="log-in-account">
-        Log in with Mixshop account<span
+        Log in with Fashion Express account<span
           class="iconfont icon-arrowRight"
         ></span>
       </div>
       <div @click="$router.push(`/ssignup?name=${name}&channel=${channel}`)" class="creat-in-account">    
-        Create new Mixshop account<span class="iconfont icon-arrowRight"></span>
+        Create new Fashion Express account<span class="iconfont icon-arrowRight"></span>
       </div>
     </div>
   </div>

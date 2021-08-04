@@ -1,7 +1,7 @@
 export const state = () => ({
   productList: [],
   pageNum: 1,
-  pageSize: 60,
+  pageSize: 10,
   totalPage: 0,
   total: 1,
   message: "",
@@ -33,6 +33,9 @@ export const mutations = {
   },
   m_update_status(state, payload) {
     state.status = payload;
+  },
+  m_set_product_undefined(state,payload){
+    state.productList[payload]=undefined;
   },
   m_sort_productLowToHigh(state) {
     let quickSort = (arr, left, right) => {
