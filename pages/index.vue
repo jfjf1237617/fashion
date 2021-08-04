@@ -44,7 +44,7 @@ export default Vue.extend({
             shopifyEmail,
           });
           const res = await app.$axios.get(
-            `/shopify/authorize/url?shopName=${shopifyName}`
+            `/shopify/fashion/authorize/url?shopName=${shopifyName}`
           );
           if (res.data.code === 200) {
             let authUrl = res.data.data;
