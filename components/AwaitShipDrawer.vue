@@ -428,7 +428,7 @@ export default Vue.extend({
         if (res.data.code === 200) {
           this.$message({
             type: "success",
-            message: "Confirm success!",
+            message: "Confirm successfully!",
           });
           // this.check=true;
           // this.confirmStatus='1';

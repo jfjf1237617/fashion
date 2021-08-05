@@ -201,6 +201,10 @@ export default Vue.extend({
       loading: null,
     };
   },
+  mounted(){
+    console.log(this.orders);
+    
+  },
   methods: {
     ...mapMutations("shopifyOrder", [
       "m_render_shopifyOrders",
@@ -286,8 +290,6 @@ export default Vue.extend({
       }
     },
     async handleNext() {
-      console.log(this.next);
-      
       if (this.next) {
         let params = {};
         if (this.payPadding === 1) {

@@ -450,3 +450,15 @@ export default Vue.extend({
   }
 }
 </style>
+<style lang="less">
+.el-table__header{
+  .cell{
+    word-break: keep-all !important;
+  }
+}
+.el-table__row {
+  .cell {
+    word-break: keep-all !important;
+  }
+}
+</style>
