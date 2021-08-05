@@ -101,7 +101,7 @@ export default Vue.extend({
       this.logOutIcon = logOut;
     },
     toShopify() {
-      window.open("https://apps.shopify.com/MixShop");
+      window.open("https://apps.shopify.com/FashionExpress");
     },
     toSquare() {
       window.open("https://squareup.com/");

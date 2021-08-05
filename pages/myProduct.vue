@@ -285,7 +285,7 @@ export default Vue.extend({
           });
         }
       } else {
-        window.open("https://apps.shopify.com/MixShop");
+        window.open("https://apps.shopify.com/FashionExpress");
       }
       this.shopifyLoading.delete(id);
       this.disableRow.delete(id);
