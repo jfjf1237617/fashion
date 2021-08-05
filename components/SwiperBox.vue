@@ -44,13 +44,13 @@ import { Pagination, Navigation, Autoplay, Thumbs } from "swiper";
 Swiper.use([Pagination, Navigation, Autoplay, Thumbs]);
 import { close } from "~/data/svg";
 export default Vue.extend({
-  props: { bigImgBox: Array,index:Number },
+  props: { bigImgBox: Array, index: Number },
   components: { Pagination },
   name: "swipBox",
   data() {
     return {
       closeIcon: "",
-      galleryTop:Function,
+      galleryTop: Function,
     };
   },
   created() {
@@ -113,13 +113,13 @@ export default Vue.extend({
       return {};
     },
   },
-  watch:{
-    index:{
-      handler(nVal,oVal){
-        this.galleryTop.slideTo(nVal)
-      }
-    }
-  }
+  watch: {
+    index: {
+      handler(nVal, oVal) {
+        this.galleryTop.slideTo(nVal);
+      },
+    },
+  },
 });
 </script>
 <style lang="less" scoped>
@@ -195,10 +195,13 @@ export default Vue.extend({
       margin: 0;
       .swiper-bottom-box {
         height: 78px !important;
+        overflow: hidden;
         img {
           border: 1px solid #ccd2e7;
           border-radius: 4px;
-          height: auto !important;
+          height: 73px !important;
+          object-fit: cover;
+          z-index: 9999;
         }
         &.swiper-slide-thumb-active-box {
           border: 2px solid #284198;

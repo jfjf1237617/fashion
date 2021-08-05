@@ -11,14 +11,17 @@
         <template slot-scope="scope">
           <img
             :src="
-              scope.row.pic.includes('gigab2b')
-                ? scope.row.pic +
-                  '?x-oss-process=image%2Fresize%2Cw_500%2Ch_500%2Cm_pad'
+              scope.row.pic.slice(0, 4) !== 'http'
+                ? scope.row.pic.slice(1, -1)
                 : scope.row.pic
             "
             class="my-product-pic"
           />
         </template>
+        <!-- scope.row.pic.includes('gigab2b')
+                ? scope.row.pic +
+                  '?x-oss-process=image%2Fresize%2Cw_500%2Ch_500%2Cm_pad'
+                : scope.row.pic -->
       </el-table-column>
       <el-table-column
         class="my-product-table-item"

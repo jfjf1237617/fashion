@@ -67,6 +67,9 @@ export default Vue.extend({
   created() {
     this.shipIcon = ship;
   },
+  mounted(){
+    console.log(this.productInfo);
+  },
   methods: {
     ...mapMutations("product", ["m_get_productDetail"]),
     toDetails(e) {

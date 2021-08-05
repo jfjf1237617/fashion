@@ -66,7 +66,7 @@ import { Loading } from "element-ui";
 import distributorService from "~/global/service/distributor_product.js";
 import { mapState } from "vuex";
 export default Vue.extend({
-  layout:'base',
+  layout: "base",
   validate({ params }) {
     let id = params.id;
     return /^\d+$/.test(id);
@@ -76,13 +76,12 @@ export default Vue.extend({
     swipBox,
   },
   beforeRouteUpdate(to, from, next) {
-    
     next();
   },
   data() {
     return {
       goBackIcon: "",
-      imgArr: [],
+      imgArr: [] as any,
       imgArrBox: [],
       detail: {} as any,
       value: 4,
@@ -117,8 +116,8 @@ export default Vue.extend({
     },
     async getDetail() {
       if (!this.productDetail) {
-        console.log('nodetail');
-        
+        console.log("nodetail");
+
         console.log("nodetail");
         let res = await productService.allList({
           idList: this.$route.params.id,
@@ -128,11 +127,19 @@ export default Vue.extend({
           let picture = this.detail.albumPics;
           this.imgArr = picture.split(",");
           (this.imgArr as any).unshift(this.detail.pic);
-          this.imgArr.map((item:any, index) => {
-            item.includes("gigab2b")
-              ? item + "?x-oss-process=image%2Fresize%2Cw_500%2Ch_500%2Cm_pad"
-              : item;
+          this.imgArr = this.imgArr.map((item: any, index: number) => {
+            if (item.slice(0, 4) !== "http") {
+              
+              return item.slice(1, item.length - 1);
+            }else{
+              return item
+            }
+            // item.includes("gigab2b")
+            //   ? item.slice +
+            //     "?x-oss-process=image%2Fresize%2Cw_500%2Ch_500%2Cm_pad"
+            //   : item;
           });
+          this.imgArr.splice(this.imgArr.length - 1, 1);
           this.imgArrBox = picture.split(",");
           (this.imgArrBox as any).unshift(this.detail.pic);
         }
@@ -141,16 +148,31 @@ export default Vue.extend({
           // this.$refs.feSwipers.galleryTopLunbo();
         }, 0);
       } else {
-        console.log(this.productDetail);
         this.detail = JSON.parse(JSON.stringify(this.productDetail));
+        console.log(this.detail);
+        
         let picture = this.detail.albumPics;
         this.imgArr = picture.split(",");
-        (this.imgArr as any).unshift(this.detail.pic);
+        this.imgArr = this.imgArr.map((item: any, index: number) => {
+          if (item.slice(0, 4) !== "http") {
+            return item.slice(1, item.length - 1);
+          }
+          // item.includes("gigab2b")
+          //   ? item.slice +
+          //     "?x-oss-process=image%2Fresize%2Cw_500%2Ch_500%2Cm_pad"
+          //   : item;
+        });
+        this.imgArr.splice(this.imgArr.length - 1, 1);
+        if(this.detail.pic.slice(0,4) !=='http'){
+          (this.imgArr as any).unshift(this.detail.pic.slice(1, -1));
+        }else{
+          (this.imgArr as any).unshift(this.detail.pic);
+        }
         this.imgArrBox = picture.split(",");
         (this.imgArrBox as any).unshift(this.detail.pic);
       }
     },
-    openDialog(val:number) {
+    openDialog(val: number) {
       this.dialogVisible = true;
       this.index = val;
     },
@@ -194,7 +216,6 @@ export default Vue.extend({
     this.getIcon();
   },
   mounted() {
-    console.log('aaaaaaaa');
     this.getDetail();
   },
 });

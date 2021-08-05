@@ -145,10 +145,13 @@ export default Vue.extend({
     height: 100px;
     .swiper-bottom {
       height: 74px !important;
+      overflow: hidden;
       img {
         border: 1px solid #ccd2e7;
         border-radius: 4px;
-        height: auto !important;
+        height: 73px !important;
+        object-fit: cover;
+        z-index: 9999;
       }
     }
   }
