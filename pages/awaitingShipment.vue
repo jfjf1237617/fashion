@@ -68,7 +68,11 @@
         <el-table-column class="await-ship-table-item" label="Recipient">
           <template slot-scope="scope">
             <p>
-              {{ scope.row.shipping_address.name }}
+              {{
+                scope.row.shipping_address
+                  ? scope.row.shipping_address.name
+                  : ""
+              }}
             </p>
             <!-- <p>
               {{ scope.row.customer.first_name }}&nbsp;{{
@@ -134,7 +138,7 @@ import { mapMutations, mapState } from "vuex";
 import shopifyService from "~/global/service/shopify";
 import awaitShipDrawer from "~/components/AwaitShipDrawer.vue";
 import { EventBus } from "~/event-bus.js";
-import {Loading} from "element-ui";
+import { Loading } from "element-ui";
 export default Vue.extend({
   layout: "base",
   async middleware({ route, store, app, redirect }) {
@@ -153,7 +157,7 @@ export default Vue.extend({
         result = true;
       } else if (id) {
         if (flag.length > 0) {
-          redirect("/products");
+          redirect("/");
           result = true;
         }
       }
@@ -173,17 +177,23 @@ export default Vue.extend({
     };
     let arrays, pre, next;
     if (process.server) {
+      
       let res = await app.$axios.get(
         `/shopify/orders?fulfillmentStatus=unshipped&limit=10`
       );
+        console.log(res.data.data,"server");
       if (res.data.code === 200) {
         ({ arrays, pre, next } = res.data.data);
       }
     } else if (process.client) {
       let res = await shopifyService.getOrderList(params);
+      console.log(res.data.data);
+      
       if (res.data.code === 200) {
         ({ arrays, pre, next } = res.data.data);
       }
+      console.log(arrays);
+      
     }
     store.commit("shopifyOrder/m_render_shopifyOrders", arrays);
     store.commit("shopifyOrder/m_get_shopifyPre", pre);
@@ -203,7 +213,7 @@ export default Vue.extend({
       drawer: false,
       currentRow: {},
       status: "",
-      loading:null,
+      loading: null,
     };
   },
   computed: {
@@ -213,12 +223,15 @@ export default Vue.extend({
       "next",
       "fulfillmentStatus",
       "location",
-      'payPadding',
+      "payPadding",
     ]),
   },
   beforeMount() {
     this.server.init();
-    this.getlocationList();
+    // this.getlocationList();
+  },
+  mounted() {
+    console.log(this.orders);
   },
   methods: {
     ...mapMutations("shopifyOrder", [
@@ -228,8 +241,8 @@ export default Vue.extend({
       "m_get_shopifyFulfillmentStatus",
       "m_get_shopifyLocation",
     ]),
-    openRowDetail(row:any, column:any, event:any) {
-      EventBus.$on("sendStatus", (msg:any) => {
+    openRowDetail(row: any, column: any, event: any) {
+      EventBus.$on("sendStatus", (msg: any) => {
         this.status = msg;
       });
       this.currentRow = row;
@@ -240,14 +253,14 @@ export default Vue.extend({
         let params = {};
         if (this.payPadding === 1) {
           params = {
-            url: this.next,
+            url: this.pre,
             fulfillmentStatus: this.fulfillmentStatus,
             limit: 10,
             payPadding: 1,
           };
         } else {
           params = {
-            url: this.next,
+            url: this.pre,
             fulfillmentStatus: this.fulfillmentStatus,
             limit: 10,
           };
@@ -266,7 +279,7 @@ export default Vue.extend({
         if (code !== 200) {
           this.$message({
             message,
-            type: 'error',
+            type: "error",
           });
         } else {
           this.m_render_shopifyOrders(orders);
@@ -306,7 +319,7 @@ export default Vue.extend({
         if (code !== 200) {
           this.$message({
             message,
-            type: 'error',
+            type: "error",
           });
         } else {
           this.m_render_shopifyOrders(orders);
@@ -371,6 +384,8 @@ export default Vue.extend({
 .pagination-section {
   width: 100%;
   margin: 16px auto;
+  display: flex;
+  justify-content: center;
   .pre {
     width: 38px;
     height: 36px;

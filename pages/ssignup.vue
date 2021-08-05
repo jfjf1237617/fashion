@@ -32,7 +32,7 @@
       </div>
     </div>
     <div class="block login-signup">
-      <button class="button login" @click="signup">Join Fashion Express</button>
+      <button style="background:#c79818;" class="button login" @click="signup">Join Fashion Express</button>
       <p class="to-slogin">
         Already have an account?<span class="to-slogin-btn" @click="toSlogin">
           Log in</span

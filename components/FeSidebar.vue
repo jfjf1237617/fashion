@@ -95,7 +95,7 @@ export default Vue.extend({
   beforeMount() {
     this.getToken();
     this.sortCategory();
-    this.getCategories();
+    // this.getCategories();
     this.$emit('have-token',this.token);
   },
   mounted() {

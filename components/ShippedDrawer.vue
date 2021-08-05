@@ -8,13 +8,11 @@
         {{ fulfillments[0].id }}
       </p>
       <p class="shipped-company">{{ fulfillments[0].tracking_company }}</p>
-      <p class="shipped-address">{{ address.city }}</p>
+      <p class="shipped-address">{{ address ? address.city : "" }}</p>
       <p class="shipped-create">{{ fulfillments[0].created_at }}</p>
       <p class="order-status">
         Pay Status:
-        {{
-          status
-        }}
+        {{ status }}
       </p>
     </div>
     <div class="item-info">
@@ -42,12 +40,17 @@
         <el-collapse-item title="Recipient/Buyer" name="1">
           <span class="side-icon" v-html="recipientHomeIcon"></span>
           <p class="recipient-name">
-            {{ address.first_name }}{{ address.last_name }}
+            {{ address ? address.first_name : ""
+            }}{{ address ? address.last_name : "" }}
           </p>
-          <p class="recipient-zip">{{ address.zip }}</p>
-          <p class="recipient-address-one">{{ address.address1 }}</p>
-          <p class="recipient-address-two">{{ address.address2 }}</p>
-          <p class="recipient-phone">{{ address.phone }}</p>
+          <p class="recipient-zip">{{ address ? address.zip : "" }}</p>
+          <p class="recipient-address-one">
+            {{ address ? address.address1 : "" }}
+          </p>
+          <p class="recipient-address-two">
+            {{ address ? address.address2 : "" }}
+          </p>
+          <p class="recipient-phone">{{ address ? address.phone : "" }}</p>
         </el-collapse-item>
         <el-collapse-item title="Summary" name="2">
           <div class="summary-subtotal">
@@ -92,18 +95,18 @@ export default Vue.extend({
     shipping: Array,
     tax: String,
     total: String,
-    orderStatus:Number,
+    orderStatus: Number,
   },
-  computed:{
-    status(){
-      if(this.orderStatus>0){
-        return "Paid"
-      }else if(this.orderStatus===-100){
-        return "Paying"
-      }else{
-        return "Unpaid"
+  computed: {
+    status() {
+      if (this.orderStatus > 0) {
+        return "Paid";
+      } else if (this.orderStatus === -100) {
+        return "Paying";
+      } else {
+        return "Unpaid";
       }
-    }
+    },
   },
   data() {
     return {

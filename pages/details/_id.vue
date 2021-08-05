@@ -174,12 +174,12 @@ export default Vue.extend({
         if (importProduct.data.code === 200) {
           this.$message({
             type: "success",
-            message: "Collect successfully!",
+            message: "Add successfully!",
           });
         } else {
           this.$message({
             type: "error",
-            message: "Collect unsuccessfully!",
+            message: "Add unsuccessfully!",
           });
         }
         (this.loading as any).close();

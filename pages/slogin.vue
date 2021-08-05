@@ -16,7 +16,7 @@
       </div>
     </div>
     <div class="block login-signup">
-      <button class="button login" @click="slogin">Login</button>
+      <button style="background:#c79818;" class="button login" @click="slogin">Login</button>
       <p class="to-signup">
         Don't have a Fashion Express account?
         <span class="to-signup-btn" @click="toSsignup"> Sign up now</span>

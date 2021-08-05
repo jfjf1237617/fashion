@@ -24,12 +24,17 @@
       <el-collapse-item title="Recipient/Buyer" name="1">
         <span class="side-icon" v-html="recipientHomeIcon"></span>
         <p class="recipient-name">
-          {{ address.first_name }}{{ address.last_name }}
+          {{ address ? address.first_name : ""
+          }}{{ address ? address.last_name : "" }}
         </p>
-        <p class="recipient-zip">{{ address.zip }}</p>
-        <p class="recipient-address-one">{{ address.address1 }}</p>
-        <p class="recipient-address-two">{{ address.address2 }}</p>
-        <p class="recipient-phone">{{ address.phone }}</p>
+        <p class="recipient-zip">{{ address ? address.zip : "" }}</p>
+        <p class="recipient-address-one">
+          {{ address ? address.address1 : "" }}
+        </p>
+        <p class="recipient-address-two">
+          {{ address ? address.address2 : "" }}
+        </p>
+        <p class="recipient-phone">{{ address ? address.phone : "" }}</p>
       </el-collapse-item>
     </el-collapse>
     <!-- <p class="shipping-method">Shipping method:First Class Package</p> -->
@@ -327,7 +332,7 @@ export default Vue.extend({
       NullShipFromValue: false,
       NullServiceValue: false,
       loading: false,
-      check:false,
+      check: false,
       // rules: {
       //   trackingUrl: [{ required: true, message: "required" }],
       //   trackingNumber: [{ required: true, message: "required" }],

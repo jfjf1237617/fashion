@@ -34,8 +34,11 @@ export const mutations = {
   m_update_status(state, payload) {
     state.status = payload;
   },
-  m_set_product_undefined(state,payload){
-    state.productList[payload]=undefined;
+  m_set_product_undefined(state, payload) {
+    state.productList[payload] = undefined;
+  },
+  m_set_status(state, payload) {
+    state.productList[payload[0]] = payload[1];
   },
   m_sort_productLowToHigh(state) {
     let quickSort = (arr, left, right) => {

@@ -143,7 +143,7 @@ export default Vue.extend({
         result = true;
       } else if (id) {
         if (flag.length > 0) {
-          redirect("/products");
+          redirect("/");
           result = true;
         }
       }
@@ -183,7 +183,13 @@ export default Vue.extend({
     store.commit("shopifyOrder/m_get_shopifyPayPadding", 1);
   },
   computed: {
-    ...mapState("shopifyOrder", ["orders", "pre", "next", "fulfillmentStatus","payPadding",]),
+    ...mapState("shopifyOrder", [
+      "orders",
+      "pre",
+      "next",
+      "fulfillmentStatus",
+      "payPadding",
+    ]),
   },
   data() {
     return {
@@ -202,7 +208,7 @@ export default Vue.extend({
       "m_get_shopifyNext",
       "m_get_shopifyFulfillmentStatus",
     ]),
-    payStatus(val:number) {
+    payStatus(val: number) {
       if (val > 0) {
         return "Paid";
       } else if (val === -100) {
@@ -211,7 +217,7 @@ export default Vue.extend({
         return "Unpaid";
       }
     },
-    async toCheckout(productDetail:any) {
+    async toCheckout(productDetail: any) {
       if (productDetail.payStatus > 0 || productDetail.payStatus === -100) {
         this.$router.push({
           name: "spayStatus-id",
@@ -244,14 +250,14 @@ export default Vue.extend({
         let params = {};
         if (this.payPadding === 1) {
           params = {
-            url: this.next,
+            url: this.pre,
             fulfillmentStatus: this.fulfillmentStatus,
             limit: 10,
             payPadding: 1,
           };
         } else {
           params = {
-            url: this.next,
+            url: this.pre,
             fulfillmentStatus: this.fulfillmentStatus,
             limit: 10,
           };
@@ -270,7 +276,7 @@ export default Vue.extend({
         if (code !== 200) {
           this.$message({
             message,
-            type: 'error',
+            type: "error",
           });
         } else {
           this.m_render_shopifyOrders(orders);
@@ -280,6 +286,8 @@ export default Vue.extend({
       }
     },
     async handleNext() {
+      console.log(this.next);
+      
       if (this.next) {
         let params = {};
         if (this.payPadding === 1) {
@@ -310,7 +318,7 @@ export default Vue.extend({
         if (code !== 200) {
           this.$message({
             message,
-            type: 'error',
+            type: "error",
           });
         } else {
           this.m_render_shopifyOrders(orders);
@@ -362,6 +370,8 @@ export default Vue.extend({
 .pagination-section {
   width: 100%;
   margin: 16px auto;
+  display: flex;
+  justify-content: center;
   .pre {
     width: 38px;
     height: 36px;

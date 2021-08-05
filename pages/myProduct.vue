@@ -54,8 +54,10 @@
       </el-table-column>
       <el-table-column class="my-product-table-item" label="Import">
         <template slot-scope="scope">
-          <p>
-            {{ scope.row.status === 5 ? "Square" : "Shopify" }}
+          <p
+            v-show="scope.row.status === 3 || myDisableImport.has(scope.row.id)"
+          >
+            Shopify
           </p>
         </template>
       </el-table-column>
@@ -74,10 +76,14 @@
             >Remove product</el-button
           >
           <el-button
-            :disabled="myDisableRow.has(scope.row.id)"
+            :disabled="
+              myDisableRow.has(scope.row.id) ||
+              myDisableImport.has(scope.row.id) ||
+              scope.row.status === 3
+            "
             :loading="myShopifyLoading.has(scope.row.id)"
             size="mini"
-            @click="importShopify(scope.row, scope.$index)"
+            @click="importShopify(scope.row, scope.$index, $event)"
             >Import to shopify</el-button
           >
         </template>
@@ -118,7 +124,7 @@ export default Vue.extend({
         result = true;
       } else if (id) {
         if (flag.length > 0) {
-          redirect("/products");
+          redirect("/");
           result = true;
         }
       }
@@ -172,6 +178,8 @@ export default Vue.extend({
       shopifyLoadingChange: 0,
       disableRow: new Set(),
       disableRowChange: 0,
+      disableImport: new Set(),
+      disableImportChange: 0,
     };
   },
   computed: {
@@ -192,6 +200,7 @@ export default Vue.extend({
       });
       return filterList;
     },
+
     myRemoveLoading(): any {
       var removeNum = this.removeLoadingChange;
       return this.removeLoading;
@@ -204,6 +213,10 @@ export default Vue.extend({
       var disableNum = this.disableRowChange;
       return this.disableRow;
     },
+    myDisableImport(): any {
+      var importNum = this.disableImportChange;
+      return this.disableImport;
+    },
   },
   watch: {
     // screenWidth(val) {
@@ -211,7 +224,7 @@ export default Vue.extend({
     // },
   },
   methods: {
-    ...mapMutations('product',['m_set_product_undefined']),
+    ...mapMutations("product", ["m_set_product_undefined", "m_set_status"]),
     handlePagination(current: number) {
       let obj = JSON.parse(JSON.stringify(this.$route.query));
       Object.assign(obj, { page: current });
@@ -245,8 +258,10 @@ export default Vue.extend({
       }
       this.removeLoading.delete(id);
       this.disableRow.delete(id);
+      this.removeLoadingChange -= 1;
+      this.disableRowChange -= 1;
     },
-    async importShopify(row: any, index: number) {
+    async importShopify(row: any, index: number, e: any) {
       let id = row.id;
       this.shopifyLoading.add(id);
       this.disableRow.add(id);
@@ -257,6 +272,13 @@ export default Vue.extend({
         let importToShopify =
           await distributorService.postDistributorProductImport(id, "shopify");
         if (importToShopify.data.code === 200) {
+          this.disableImportChange += 1;
+          this.disableImport.add(id);
+          // let obj = this.myProductList.find((item: any) => {
+          //   return item.id == id;
+          // });
+          // let i = this.productList.indexOf(<never>obj);
+          // this.m_set_status([i,5]);
           this.$message({
             type: "success",
             message: "Import successfully!",
@@ -267,13 +289,15 @@ export default Vue.extend({
       }
       this.shopifyLoading.delete(id);
       this.disableRow.delete(id);
+      this.shopifyLoadingChange -= 1;
+      this.disableRowChange -= 1;
     },
     async renderList() {
       let params = {
         pageNum: this.pageNum,
         // pageSize: this.pageSize,
         // status: 1,
-        store:this.$store
+        store: this.$store,
       };
       getMyProductList(params);
       // const res = await distributorService.getDistributorProductRealSelf(

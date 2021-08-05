@@ -22,8 +22,7 @@
     </el-drawer>
     <div ref="shipped" class="shipped-container">
       <p class="title">Shipped</p>
-      <p class="sub-title">
-      </p>
+      <p class="sub-title"></p>
     </div>
     <div class="shipped-content">
       <el-table
@@ -66,7 +65,11 @@
         <el-table-column class="await-ship-table-item" label="Recipient">
           <template slot-scope="scope">
             <p>
-              {{ scope.row.shipping_address.name }}
+              {{
+                scope.row.shipping_address
+                  ? scope.row.shipping_address.name
+                  : ""
+              }}
             </p>
           </template>
         </el-table-column>
@@ -145,7 +148,7 @@ export default Vue.extend({
         result = true;
       } else if (id) {
         if (flag.length > 0) {
-          redirect("/products");
+          redirect("/");
           result = true;
         }
       }
@@ -195,22 +198,29 @@ export default Vue.extend({
       drawer: false,
       direction: "rtl",
       orderStatus: 0,
+      loading: null,
     };
   },
   computed: {
-    ...mapState("shopifyOrder", ["orders", "pre", "next", "fulfillmentStatus"]),
+    ...mapState("shopifyOrder", [
+      "orders",
+      "pre",
+      "next",
+      "fulfillmentStatus",
+      "payPadding",
+    ]),
   },
   beforeMount() {
     this.server.init();
   },
   methods: {
-     ...mapMutations("shopifyOrder", [
+    ...mapMutations("shopifyOrder", [
       "m_render_shopifyOrders",
       "m_get_shopifyPre",
       "m_get_shopifyNext",
       "m_get_shopifyFulfillmentStatus",
     ]),
-    payStatus(val:number) {
+    payStatus(val: number) {
       if (val > 0) {
         return "Paid";
       } else if (val === -100) {
@@ -219,7 +229,7 @@ export default Vue.extend({
         return "Unpaid";
       }
     },
-    async openRowDetail(row:any, column:any, event:any) {
+    async openRowDetail(row: any, column: any, event: any) {
       if (
         event.target.className.indexOf("shipped-checkout") == -1 &&
         event.target.parentNode.className.indexOf("shipped-checkout") == -1
@@ -228,6 +238,88 @@ export default Vue.extend({
         this.currentRow = row;
         this.fulfillments = (this.currentRow as any).fulfillments;
         this.drawer = true;
+      }
+    },
+    async handlePre() {
+      if (this.pre) {
+        let params = {};
+        if (this.payPadding === 1) {
+          params = {
+            url: this.pre,
+            fulfillmentStatus: this.fulfillmentStatus,
+            limit: 10,
+            payPadding: 1,
+          };
+        } else {
+          params = {
+            url: this.pre,
+            fulfillmentStatus: this.fulfillmentStatus,
+            limit: 10,
+          };
+        }
+        if (this.loading) {
+          (this.loading as any).close();
+        }
+        (this.loading as any) = Loading.service({
+          target: ".el-main",
+        });
+        const res = await shopifyService.getOrderList(params);
+        (this.loading as any).close();
+        let orders = res.data.data.arrays;
+        let pre = res.data.data.pre;
+        let next = res.data.data.next;
+        let message = res.data.message;
+        let code = res.data.code;
+        if (code !== 200) {
+          this.$message({
+            message,
+            type: "error",
+          });
+        } else {
+          this.m_render_shopifyOrders(orders);
+          this.m_get_shopifyPre(pre);
+          this.m_get_shopifyNext(next);
+        }
+      }
+    },
+    async handleNext() {
+      if (this.next) {
+        let params = {};
+        if (this.payPadding === 1) {
+          params = {
+            url: this.next,
+            fulfillmentStatus: this.fulfillmentStatus,
+            limit: 10,
+            payPadding: 1,
+          };
+        } else {
+          params = {
+            url: this.next,
+            fulfillmentStatus: this.fulfillmentStatus,
+            limit: 10,
+          };
+        }
+        this.loading && (this.loading as any).close();
+        (this.loading as any) = Loading.service({
+          target: ".el-main",
+        });
+        const res = await shopifyService.getOrderList(params);
+        (this.loading as any).close();
+        let orders = res.data.data.arrays;
+        let pre = res.data.data.pre;
+        let next = res.data.data.next;
+        let message = res.data.message;
+        let code = res.data.code;
+        if (code !== 200) {
+          this.$message({
+            message,
+            type: "error",
+          });
+        } else {
+          this.m_render_shopifyOrders(orders);
+          this.m_get_shopifyPre(pre);
+          this.m_get_shopifyNext(next);
+        }
       }
     },
   },
@@ -272,6 +364,8 @@ export default Vue.extend({
 .pagination-section {
   width: 100%;
   margin: 16px auto;
+  display: flex;
+  justify-content: center;
   .pre {
     width: 38px;
     height: 36px;

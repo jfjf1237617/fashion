@@ -33,7 +33,10 @@ import { mapState, mapMutations } from "vuex";
 export default Vue.extend({
   layout: "base",
   async middleware({ route, redirect, app, query, store }) {
+    console.log('index middleware');
     if (process.server) {
+      console.log(route.fullPath.includes('myshopify'));
+      
       if (route.fullPath.includes("myshopify")) {
         if (query.shop) {
           let index = query.shop.indexOf(".myshopify");
@@ -43,12 +46,18 @@ export default Vue.extend({
             shopifyName,
             shopifyEmail,
           });
+          console.log(`/shopify/fashion/authorize/url?shopName=${shopifyName}`);
           const res = await app.$axios.get(
             `/shopify/fashion/authorize/url?shopName=${shopifyName}`
           );
+          console.log(res);
+          
           if (res.data.code === 200) {
             let authUrl = res.data.data;
             redirect(authUrl);
+          }else{
+            console.error('not 200')
+            
           }
         }
       }
