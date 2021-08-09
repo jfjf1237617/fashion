@@ -67,15 +67,11 @@ export default Vue.extend({
   created() {
     this.shipIcon = ship;
   },
-  mounted(){
-    console.log(this.productInfo);
-  },
   methods: {
     ...mapMutations("product", ["m_get_productDetail"]),
     toDetails(e) {
       if (e.target.className !== "shopify") {
         sessionStorage.setItem("product", this.productId);
-        console.log(this.productInfo);
         this.m_get_productDetail(this.productInfo);
         this.$router.push({
           name: "details-id",

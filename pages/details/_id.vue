@@ -127,18 +127,18 @@ export default Vue.extend({
           let picture = this.detail.albumPics;
           this.imgArr = picture.split(",");
           (this.imgArr as any).unshift(this.detail.pic);
-          this.imgArr = this.imgArr.map((item: any, index: number) => {
-            if (item.slice(0, 4) !== "http") {
+          // this.imgArr = this.imgArr.map((item: any, index: number) => {
+          //   if (item.slice(0, 4) !== "http") {
               
-              return item.slice(1, item.length - 1);
-            }else{
-              return item
-            }
-            // item.includes("gigab2b")
-            //   ? item.slice +
-            //     "?x-oss-process=image%2Fresize%2Cw_500%2Ch_500%2Cm_pad"
-            //   : item;
-          });
+          //     return item.slice(1, item.length - 1);
+          //   }else{
+          //     return item
+          //   }
+          //   // item.includes("gigab2b")
+          //   //   ? item.slice +
+          //   //     "?x-oss-process=image%2Fresize%2Cw_500%2Ch_500%2Cm_pad"
+          //   //   : item;
+          // });
           this.imgArr.splice(this.imgArr.length - 1, 1);
           this.imgArrBox = picture.split(",");
           (this.imgArrBox as any).unshift(this.detail.pic);
@@ -153,15 +153,15 @@ export default Vue.extend({
         
         let picture = this.detail.albumPics;
         this.imgArr = picture.split(",");
-        this.imgArr = this.imgArr.map((item: any, index: number) => {
-          if (item.slice(0, 4) !== "http") {
-            return item.slice(1, item.length - 1);
-          }
-          // item.includes("gigab2b")
-          //   ? item.slice +
-          //     "?x-oss-process=image%2Fresize%2Cw_500%2Ch_500%2Cm_pad"
-          //   : item;
-        });
+        // this.imgArr = this.imgArr.map((item: any, index: number) => {
+        //   if (item.slice(0, 4) !== "http") {
+        //     return item.slice(1, item.length - 1);
+        //   }
+        //   // item.includes("gigab2b")
+        //   //   ? item.slice +
+        //   //     "?x-oss-process=image%2Fresize%2Cw_500%2Ch_500%2Cm_pad"
+        //   //   : item;
+        // });
         this.imgArr.splice(this.imgArr.length - 1, 1);
         if(this.detail.pic.slice(0,4) !=='http'){
           (this.imgArr as any).unshift(this.detail.pic.slice(1, -1));
