@@ -3,7 +3,7 @@
     <div class="swiper-container gallery-top">
       <div class="swiper-wrapper">
         <div class="swiper-slide" v-for="(item, index) of bigImg" :key="index">
-          <img @click.self="openBox(index)" class="img" :src="item" />
+          <img alt="" @click.self="openBox(index)" class="img" :src="item" />
         </div>
       </div>
       <div class="swiper-button-next swiper-button-black top-next"></div>
@@ -17,7 +17,7 @@
           v-for="(item, index) of bigImg"
           :key="index"
         >
-          <img class="img" :src="item" />
+          <img alt="" class="img" :src="item" />
         </div>
       </div>
       <div class="swiper-button-next swiper-button-white thrumb-next"></div>

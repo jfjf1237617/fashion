@@ -16,7 +16,7 @@
           v-for="(item, index) of bigImgBox"
           :key="index"
         >
-          <img class="img-box" :src="item" />
+          <img alt="" class="img-box" :src="item" />
         </div>
       </div>
       <div class="swiper-button-next swiper-button-black top-next-box"></div>
@@ -30,7 +30,7 @@
           v-for="(item, index) of bigImgBox"
           :key="index"
         >
-          <img class="img-box" :src="item" />
+          <img alt="" class="img-box" :src="item" />
         </div>
       </div>
     </div>

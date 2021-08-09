@@ -48,6 +48,7 @@
         v-html="detail.description"
       ></div>
       <img
+        alt=""
         class="product-description-img"
         :src="item"
         v-for="(item, index) of imgArr"

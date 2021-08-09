@@ -1,7 +1,7 @@
 <template>
   <el-header>
     <div class="left-section">
-      <img class="fashion-express-logo" src="~/assets/icon/fashion-express-logo.png" />
+      <img alt="" class="fashion-express-logo" src="~/assets/icon/fashion-express-logo.png" />
     </div>
     <div class="center-section"></div>
     <div class="right-section">
@@ -165,7 +165,7 @@ export default Vue.extend({
     cursor: pointer;
     min-width: 160px;
     .fashion-express-logo{
-      // width: 65px;
+      width: auto;
       height: 50px;
       margin-left: 30px;
       margin-top: 10px;

@@ -10,6 +10,7 @@
       <el-table-column class="my-product-table-item" label="Picture">
         <template slot-scope="scope">
           <img
+            alt=""
             :src="
               scope.row.pic.slice(0, 4) !== 'http'
                 ? scope.row.pic.slice(1, -1)
@@ -201,6 +202,8 @@ export default Vue.extend({
       let filterList = this.productList.filter((item: any) => {
         return item !== undefined;
       });
+      console.log(filterList);
+      
       return filterList;
     },
 
@@ -225,6 +228,10 @@ export default Vue.extend({
     // screenWidth(val) {
     //   this.screenWidth = val;
     // },
+  },
+  mounted(){
+    console.log(this.myProductList);
+    
   },
   methods: {
     ...mapMutations("product", ["m_set_product_undefined", "m_set_status"]),

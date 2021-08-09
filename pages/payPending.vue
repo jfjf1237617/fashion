@@ -201,8 +201,9 @@ export default Vue.extend({
       loading: null,
     };
   },
-  mounted(){
+  mounted() {
     console.log(this.orders);
+    console.log();
     
   },
   methods: {
@@ -222,12 +223,17 @@ export default Vue.extend({
       }
     },
     async toCheckout(productDetail: any) {
+      console.log(productDetail.payStatus);
       if (productDetail.payStatus > 0 || productDetail.payStatus === -100) {
         this.$router.push({
           name: "spayStatus-id",
           params: { id: productDetail.id },
         });
-      } else if (!productDetail.payStatus) {
+      } else if (
+        (productDetail.payStatus < 0 &&
+        productDetail.payStatus !== -100) || !productDetail.payStatus
+      ) {
+        
         this.loading && (this.loading as any).close();
         (this.loading as any) = Loading.service({
           target: "body",
